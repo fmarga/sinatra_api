@@ -1,35 +1,34 @@
 require 'sinatra'
+require 'sinatra/base'
 require 'rack/handler/puma'
-require 'csv'
+require './data_worker'
+require './result'
 
-get '/tests' do
-  ### Example
-  # [
-  #   [cpf, name, date],
-  #   [123, 'Leandro', 2022-01-01'],
-  #   [456, 'Ana', 2022-01-02'],
-  #   [789, 'Maria', 2022-01-03']
-  # ]
-  #
-  rows = CSV.read("./data.csv", col_sep: ';')
+class Application < Sinatra::Base
+  set :bind, '0.0.0.0'
+  set :port, 3000
 
-  ### Example
-  # [cpf, name, date]
-  columns = rows.shift
+  get '/' do
+    'Hello World'
+  end
 
-  ### Example
-  # From:  [123, 'Leandro', 2022-01-01']
-  # To: { cpf: 123, name: 'Leandro', date: '2022-01-01' }
-  rows.map do |row|
-    row.each_with_object({}).with_index do |(cell, acc), idx|
-      column = columns[idx]
-      acc[column] = cell
+  get '/tests' do
+    Result.select_tests.to_json
+  end
+
+  get '/tests/:token' do
+    token = params[:token]
+    Result.find_token(token).to_json
+  end
+
+  post '/import' do
+    begin
+      DataWorker.perform_async(request.body.read)
+      201
+    rescue
+      404
     end
-  end.to_json
-end
+  end
 
-Rack::Handler::Puma.run(
-  Sinatra::Application,
-  Port: 3000,
-  Host: '0.0.0.0'
-)
+  run! if app_file == $0
+end
