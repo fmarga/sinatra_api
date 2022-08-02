@@ -1,8 +1,4 @@
-# Rebase Challenge 2022
-
-Você pode encontrar o link do repositório original [aqui](https://git.campuscode.com.br/core-team/rebase-challenge-2022/-/blob/6b40ad138141f23b70b6ada9ee41fc7a7eb6c84c)
-
-### API em Ruby para listagem de exames médicos.
+# API em Ruby para listagem de exames médicos.
 
 ## Tech Stack
 
@@ -37,7 +33,7 @@ $ bash run
 
 ## Docs
 
-Você pode encontrar a documentação da API, com os exemplos de resposta para os endpoints [aqui](https://github.com/fmarga/rebase-challenge-2022/blob/main/API.md)
+Você pode encontrar a documentação da API, com os exemplos de resposta para os endpoints [aqui](https://github.com/fmarga/sinatra_api/blob/main/API.md)
 
 ## Running tests
 
